@@ -87,3 +87,37 @@ plt.plot([p[0] for p in classB], [p[1] for p in classB], 'r.')
 plt.axis('equal')
 #plt.savefig('svmplot.pdf')
 plt.show()
+
+print("printing first support vector and its t value")
+print(support_vector_list[0][1])
+print(support_vector_list[0][2])
+#calculate b
+#point on margin: alpha[0]
+
+##use all x_vector or only the 3 support vectors?
+def calculate_b(x_vector, t_vector, sup_vector, sup_vector_t):
+    sum = 0;
+    for i in range(0, len(x_vector)):
+        kern = linear_kernel(sup_vector, x_vector[i])
+        a=alpha[i]*t_vector[i]
+        sum+=(a*kern-sup_vector_t)
+
+    return sum;
+
+b=calculate_b(x_vector, t_vector, support_vector_list[0][1] ,support_vector_list[0][2])
+print("b ", b)
+
+
+def indicator_function(sv_list, new_point, b):
+    ###sv_list[i][0] = alpha force
+    ###sv_list[i][1] = x vector
+    ###sv_list[i][2] = t value 1 / -1
+    sum = 0;
+    for i in range(0, len(sv_list)):
+        kern = linear_kernel(sv_list[0][1], sv_list[i][1])
+        a=sv_list[i][0]*sv_list[i][2]
+        sum+=(a*kern-b)
+    return sum;
+
+result = indicator_function(support_vector_list, (-1,-1), b)
+print("result ", result)
